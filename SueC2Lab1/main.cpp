@@ -25,8 +25,8 @@ const int minSize = 0;
 const int maxSize = 100;
 const int kDefaultValue = -1;
 
+//Class Template of Element for each item
 //template<class element>
-//TODO: We will do this later
 class SmcArray{
     
 public:
@@ -475,7 +475,6 @@ void testCaseFive(){
     cout << "An item's value in the array is replaced at given index." << endl;
     //Prints the array with value replaced at given index
     myArray->printArray();
-    
 }
 
 int main(int argc, const char * argv[])
