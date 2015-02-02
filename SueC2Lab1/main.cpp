@@ -40,6 +40,7 @@ public:
     int getItem(int index); //retrieves an item at a given index
     void insertItem(int value, int index, int s); //inserts an item at a given index
     void removeItem(int index); // Delete array item
+    void replaceItemAt(int index, int value); //replace value at a given index
     void printArray(); // Print Array
     void setDefault(int value); //Sets a default value for out of bounds index expansions via changeSize
     int getDefault(); //Returns the default value
@@ -48,11 +49,11 @@ public:
 private:
     int size; // Size of array (elemets)
     int * items;
-    int defaultValue;
-    void allocateArray();
-    void copyArrayIncreasedSize(int s);
+    int defaultValue;// Default value
+    void allocateArray();//Allocates an array of given size
+    void copyArrayIncreasedSize(int s); //Copies an array with increased size
     void copyArrayDecreasedSizeby1(int , int); //Decreases the size by 1 and leaves out a specific index;
-    bool checkIndexBounds(int index);
+    bool checkIndexBounds(int index);//Checks the array is within bounds
 };
 
 //Default Constructor
@@ -74,18 +75,18 @@ SmcArray::SmcArray(int s){
     this->defaultValue = kDefaultValue;
 }
 
-//
+//Deletes the items in aray
 SmcArray::~SmcArray(){
     delete [] this->items;
 }
 
-//
+//Allocates an array of given size
 void SmcArray::allocateArray(){
     //Allocate an array of this->size
     this->items = new int[this->size];
 }
 
-//
+//Gets size of the array
 int SmcArray::getSize(){
     return this->size;
 }
@@ -113,12 +114,12 @@ void SmcArray::setItem(int value, int index){
     }else if(index > this->size-1){
         this->pushItem(value);
     }else{
-        //Oh no!! God Help
+        //Item is not within the bounds of the array
+        //Oh no!! Help
         cerr << "Inserted item is not within the bounds of the array\n";
     }
 }
 
-//TODO: Add Comments
 //gets an item in the array and checks to see if the index is within bounds
 int SmcArray::getItem(int index){
     //Check to see if the index can be retrieved
@@ -128,38 +129,37 @@ int SmcArray::getItem(int index){
         return this->items[index];
         
     }else{
-
+        
         //Even though this will return the default value the user is prompted with a message indicating that a default value has been returned
-        cerr << __PRETTY_FUNCTION__ << ": Returning Default Value\n ";
-
+        cerr << __PRETTY_FUNCTION__ << ": Returning Default Value\n ";//_PRETTY_FUNCTION helps with debugging by identifying the name of where error is located
+        
         //TODO: setting with type
         return this->defaultValue;
     }
 }
 
-//insert an item to the somewhere in the array
+//insert an item to the at the given index of the array
 void SmcArray::insertItem(int value, int index, int s){
     
     //extend the array by 1
+    //update the size by adding 1 and inserts the value into the array
     
-    //update the size by adding 1
-    
-    //insert the value into the array
-    
-    int j=0;
-    
-    if ((s > this->size) && s < maxSize){
+    //Checks that within bounds
+    if ((s >= this->size) && s < maxSize){
         
-        int * newArray = new int[s];
+        int * newArray = new int[s+1];
         
-        //Copy array that is decreased by 1 at given index from the original array into the new array
-        for (int i = 0; i < this->size+1; i++){
-            j=j+1;
-            if(i == index){
-                j = j + 1;
-                newArray[j]=value;
-            }
-            newArray[j] = this->items[i];
+        //Copy array that is increased by 1 at given index from the original array into the new array
+        if (index < 0 || index >= size+1) cout << "The index of the item to be removed is out of range." << endl;
+        else{
+            //sets the values in array before the inserted value
+            for (int i = 0; i <= index; i++) newArray[i] = items[i];
+            
+            //inserts the value after the given index
+            if (int i = index+1) newArray[i] = value;
+            
+            //sets the values in the array after the inserted value
+            for (int i = index+1; i <= this->size; i++) newArray[i+1]=items[i];
         }
         
         //Deallocate old memory
@@ -170,27 +170,42 @@ void SmcArray::insertItem(int value, int index, int s){
         this->size = s+1;
         
     }else{
-        cerr << "Oh no! My program is crashing\n";
+        cerr << "Oh no! My program is crashing\n"; //Error statement
         throw "array out of bounds exception";
     }
-    
 }
 
 //Remove an item at a given index
 void SmcArray::removeItem(int index){
     
-    //TODO: Remove 1 item from the array
+    //Remove 1 item from the array
     //Decrease the size of the array
-    this->copyArrayDecreasedSizeby1(this->size-1, index);
+    if (index <0 || index >=size) cout << "The index of the item to be removed is out of range." << endl;
+    else{
+        for (int i = index; i < this->size -1; i++)
+            items[i] = items[i+1];
+        this->size = size-1;
+    }
+}
+
+//Replaces a value at a given index
+void SmcArray::replaceItemAt(int index, int value){
+    
+    if (index <0 || index >=size) cout << "The index of the item to be removed is out of range." << endl;
+    else{
+        for (int i = index; i < this->size; i++)
+            if (int i = index) items[i] = value;
+    }
 }
 
 //Prints the array
 void SmcArray::printArray(){
-    
+    //Prints what is in my array
     //loop through an print each item
     for (int i=0; i < this->size; i++){
         cout << "Index is: " << i << " Array value is: " << this->items[i] << endl;
     }
+    cout << endl;
 }
 
 void SmcArray::copyArrayIncreasedSize(int s){
@@ -221,9 +236,7 @@ void SmcArray::copyArrayIncreasedSize(int s){
         cerr << "Oh no! My program is crashing\n";
         throw "array out of bounds exception";
     }
-    
 }
-
 
 void SmcArray::copyArrayDecreasedSizeby1(int s, int index){
     //TODO:
@@ -240,7 +253,6 @@ void SmcArray::copyArrayDecreasedSizeby1(int s, int index){
             if(i != index){
                 newArray[i] = this->items[i];
             }
-            
         }
         
         //Deallocate old memory
@@ -251,14 +263,13 @@ void SmcArray::copyArrayDecreasedSizeby1(int s, int index){
         this->size = s;
         
     }else{
-        cerr << __PRETTY_FUNCTION__ << " Oh no! My program is crashing\n";
+        cerr << __PRETTY_FUNCTION__ << " Oh no! My program is crashing\n";////_PRETTY_FUNCTION helps with debugging by identifying the name of where error is located
         throw "array out of bounds exception";
     }
 }
 
 
 //Checks if the index is within the bounds of the array
-
 bool SmcArray::checkIndexBounds(int index){
     if(index >= minSize && index < this->size){
         return true;
@@ -277,13 +288,11 @@ int SmcArray::getDefault(){
 }
 
 void SmcArray::changeSize(int newSize){
-    
-    
     //Check to make sure there is a default value
     //TODO: Come back to this issue when we get started with TYPES
     //if(this->defaultValue == NULL){
     if (/* DISABLES CODE */ (false)) {
-        cerr << __PRETTY_FUNCTION__ << " a default value has not been set\n";
+        cerr << __PRETTY_FUNCTION__ << " a default value has not been set\n";////_PRETTY_FUNCTION helps with debugging by identifying the name of where error is located
     }
     
     //First check to make sure the new size is within the bounds of the system
@@ -308,10 +317,9 @@ void SmcArray::changeSize(int newSize){
         //Copy to new pointer
         this->items = newArray;
         this->size = newSize;
-
         
     }else{
-        cerr << __PRETTY_FUNCTION__ << " Size changed to a illegal size\n";
+        cerr << __PRETTY_FUNCTION__ << " Size changed to a illegal size\n"; //_PRETTY_FUNCTION helps with debugging by identifying the name of where error is located
     }
 }
 
@@ -319,6 +327,7 @@ void SmcArray::changeSize(int newSize){
 //  insertings, removing items
 // default settings... what about negatives?
 
+//Test Case One tests adding items to the array
 void testCaseOne(){
     int myArraySize = 8;
     //Create an INSTANCE OBJECT of our class
@@ -329,8 +338,10 @@ void testCaseOne(){
     }
     
     //Prints what is in my array
+    cout << "Prints out the array before performing an operation." << endl;
     myArray->printArray();
     
+    //Items to be added to the array.
     myArray->pushItem(55);
     myArray->pushItem(12);
     myArray->pushItem(43);
@@ -339,12 +350,11 @@ void testCaseOne(){
     
     myArray->setItem(88, 44);
     
-    
-    //Prints what is in my array
+    cout << "Prints out the array with added items." << endl;
     myArray->printArray();
 }
 
-
+//Test Case Two tests changing size to the array
 void testCaseTwo(){
     int myArraySize = 8;
     //Create an INSTANCE OBJECT of our class
@@ -354,8 +364,10 @@ void testCaseTwo(){
         myArray->setItem(i,i);
     }
     
-    //Prints what is in my array
+    //Prints what is in my array.
+    cout << "Prints out the array before performing an operation." << endl;
     myArray->printArray();
+    
     //Push items
     myArray->pushItem(55);
     myArray->pushItem(12);
@@ -363,15 +375,23 @@ void testCaseTwo(){
     myArray->pushItem(21);
     myArray->pushItem(-21);
     
-    //Prints what is in my array
+    //Prints what is in new array with added items.
+    cout << "Prints out the array with push items" << endl;
     myArray->printArray();
+    
+    //Prints array with changed size.
     myArray->changeSize(5);
+    cout << "Prints out the array with changed size when new array is smaller than original array." << endl;
     myArray->printArray();
+    
+    //Prints array with changed size.
+    cout << "Prints out the array with changed size when new array is larger than orginal array. Default value is set to -1." << endl;
     myArray->changeSize(10);
     myArray->printArray();
-                    
+    
 }
 
+//Test Case Three tests inserting an item at a given index
 void testCaseThree(){
     int myArraySize = 8;
     //Create an INSTANCE OBJECT of our class
@@ -382,24 +402,89 @@ void testCaseThree(){
     }
     
     //Prints what is in my array
+    cout << "Prints out the array before performing an operation." << endl;
     myArray->printArray();
-    //Push items
-    myArray->pushItem(55);
-    myArray->pushItem(12);
-    myArray->pushItem(43);
-    myArray->pushItem(21);
-    myArray->pushItem(-21);
+    
+    
+    //Prints array with inserted item
+    myArray->insertItem(55, 3, myArray->getSize());
+    cout << "Prints out the array with inserted item." << endl;
+    myArray->printArray();
     
     //Prints what is in my array
+    cout << "Prints out the array before performing an operation." << endl;
     myArray->printArray();
+    
+    
+    //Prints array with inserted item
+    myArray->insertItem(-10, 6, myArray->getSize());
+    cout << "Prints out the array with inserted item." << endl;
+    myArray->printArray();
+    
+}
 
+//Test Case Four tests removing an item at a given index
+void testCaseFour(){
+    int myArraySize = 8;
+    //Create an INSTANCE OBJECT of our class
+    SmcArray* myArray = new SmcArray(myArraySize);
+    // Add values to our array
+    for (int i = 0; i < myArray->getSize(); i++){
+        myArray->setItem(i,i);
+    }
+    
+    //Prints what is in my array
+    cout << "Prints out the array before performing an operation." << endl;
+    myArray->printArray();
+    
+    //Removes an item
+    myArray->removeItem(3);
+    cout << "The array with item removed." << endl;
+    //Prints the array with item removed
+    myArray->printArray();
+    
+    
+    //Prints what is in my array
+    cout << "Prints out the array before performing an operation." << endl;
+    myArray->printArray();
+    
+    // Removes an item
+    myArray->removeItem(0);
+    cout << "The array with item removed." << endl;
+    //Prints the array with item removed
+    myArray->printArray();
+    
+}
+
+//Test Case Five tests replacing a value at a given index
+void testCaseFive(){
+    int myArraySize = 8;
+    //Create an INSTANCE OBJECT of our class
+    SmcArray* myArray = new SmcArray(myArraySize);
+    // Add values to our array
+    for (int i = 0; i < myArray->getSize(); i++){
+        myArray->setItem(i,i);
+    }
+    
+    //Prints what is in my array
+    cout << "Prints out the array before performing an operation." << endl;
+    myArray->printArray();
+    
+    //Replace Item at given index
+    myArray->replaceItemAt(5, 253);
+    cout << "An item's value in the array is replaced at given index." << endl;
+    //Prints the array with value replaced at given index
+    myArray->printArray();
+    
 }
 
 int main(int argc, const char * argv[])
 {
-    
-    //testCaseOne();
-    //testCaseTwo();
-    testCaseThree();
+    //Calling Test cases
+    testCaseOne(); //Test Case One tests adding items to the array
+    testCaseTwo(); //Test Case Two tests changing size to the array
+    testCaseThree(); //Test Case Three tests inserting an item at a given index
+    testCaseFour(); //Test Case Four tests removing an item at a given index
+    testCaseFive(); //Test Case Five tests replacing a value at a given index
     return 0;
 }
