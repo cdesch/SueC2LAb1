@@ -9,7 +9,7 @@
 
 //TODO: Compile instructions for Unix
 //TODO: Test cases with assert
-//TODO: Test case with his example
+//TODO: Test case with his example (Sue - INT only)
 //TODO: Does not account for array length of 0
 
 #include <iostream>
@@ -25,14 +25,12 @@
 using namespace std;
 
 //Constants
-const int defaultSize = 10;
-const int minSize = 0;
-const int maxSize = 100;
-const int kDefaultValue = -1;
+const int defaultSize = 10; //default size is 10
+const int minSize = 0; //min size of array is 0
+const int maxSize = 100; //max size of array is 100
+const int kDefaultValue = -1; //default value is set to -1
 
-
-
-//Curtousey of http://www.cplusplus.com/forum/windows/88843/
+//Reference: http://www.cplusplus.com/forum/windows/88843/
 //String Sample Context
 static const char alphanum[] =
 "0123456789"
@@ -46,7 +44,7 @@ int stringLength = sizeof(alphanum) - 1;
 // Random Character Generator Function
 // returns a random character
 char genRandomChar(){
-    return alphanum[rand() % stringLength];
+    return alphanum[rand() % stringLength]; //character generator and returns a random charater
 }
 
 //Helper Functions
@@ -54,9 +52,9 @@ char genRandomChar(){
 string generateRandomStringOfLength(int length){
     string myGeneratedString;
     for (int i = 0; i < length; i ++){
-        myGeneratedString += genRandomChar();
+        myGeneratedString += genRandomChar();//Puts random string in specified length
     }
-    return myGeneratedString;
+    return myGeneratedString; //returns the random string
 }
 
 //Class Template of Element for each item
@@ -74,7 +72,6 @@ public:
     Element getItem(int index); //retrieves an item at a given index - This item can be of Type Element, which can be several different types
     void insertItem(Element value, int index, int s); //inserts an item at a given index
     void removeItem(int index); // Delete array item
-    void replaceItemAt(int index, Element value); //replace value at a given index
     void printArray(bool linear); // Print Array
     void setDefault(Element value); //Sets a default value for out of bounds index expansions via changeSize
     Element getDefault(); //Returns the default value
@@ -111,7 +108,7 @@ SmcArray<Element>::SmcArray(int s){
     this->defaultValue = kDefaultValue;
 }
 
-//Deletes the items in aray
+//Deletes the items in array
 template <class Element>
 SmcArray<Element>::~SmcArray(){
     delete [] this->items;
@@ -127,19 +124,18 @@ void SmcArray<Element>::allocateArray(){
 //Gets size of the array
 template <class Element>
 int SmcArray<Element>::getSize(){
-    return this->size;
+    return this->size; //returns the size fo the array
 }
 
 //Add an item to the end of the array
 template <class Element>
 void SmcArray<Element>::pushItem(Element value){
-
+    
     //Increase the size of array
     this->copyArrayIncreasedSize(this->size + 1);
     
     //Add our new value into the last slot in the array
     this->items[size - 1] = value;
-    
 }
 
 //sets an item in the array (overwrite)
@@ -150,7 +146,7 @@ void SmcArray<Element>::setItem(Element value, int index){
     if(this->checkIndexBounds(index)){
         
         //Write to the array
-        this->items[index] = value;
+        this->items[index] = value; //writes the value into the item array
         
     }else if(index > this->size-1){
         
@@ -163,7 +159,7 @@ void SmcArray<Element>::setItem(Element value, int index){
     }else{
         //Item is not within the bounds of the array
         //Oh no!! Help
-        cerr << "Inserted item is not within the bounds of the array\n";
+        cerr << "Inserted item is not within the bounds of the array\n";//error statement when iem is out of bounds
     }
 }
 
@@ -174,14 +170,14 @@ Element SmcArray<Element>::getItem(int index){
     if(this->checkIndexBounds(index)){
         
         //Write to the array
-        return this->items[index];
+        return this->items[index]; //writes the value into the item array
         
     }else{
         //Even though this will return the default value the user is prompted with a message indicating that a default value has been returned
         cerr << __PRETTY_FUNCTION__ << ": Returning Default Value\n ";//_PRETTY_FUNCTION helps with debugging by identifying the name of where error is located
         
         //TODO: setting with type
-        return this->defaultValue;
+        return this->defaultValue; //returns the default value
     }
 }
 
@@ -215,7 +211,7 @@ void SmcArray<Element>::insertItem(Element value, int index, int s){
         
         //Copy to new pointer
         this->items = newArray;
-        this->size = s+1;
+        this->size = s+1; // increase size by 1
         
     }else{
         cerr << "Oh no! My program is crashing\n"; //Error statement
@@ -229,22 +225,11 @@ void SmcArray<Element>::removeItem(int index){
     
     //Remove 1 item from the array
     //Decrease the size of the array
-    if (index < 0 || index >=size) cout << "The index of the item to be removed is out of range." << endl;
+    if (index < 0 || index >=size) cout << "The index of the item to be removed is out of range." << endl; //Error statement
     else{
-        for (int i = index; i < this->size -1; i++)
-            items[i] = items[i+1];
-        this->size = size-1;
-    }
-}
-
-//Replaces a value at a given index
-template <class Element>
-void SmcArray<Element>::replaceItemAt(int index, Element value){
-    
-    if (index < 0 || index >=size) cout << "The index of the item to be removed is out of range." << endl;
-    else{
-        for (int i = index; i < this->size; i++)
-            if (int i = index) items[i] = value;
+        for (int i = index; i < this->size-1; i++) //starts the loop where the item is removed and goes to one less than original array size
+            items[i] = items[i+1]; //sets the values after the item is deleted
+        this->size = size-1; //reduces the size of the array by q
     }
 }
 
@@ -263,9 +248,9 @@ void SmcArray<Element>::printArray(bool linear){
             cout << "Index is: " << i << " Array value is: " << this->items[i] << endl;
         }
     }
-   
     cout << endl;
 }
+
 //TODO: Comments
 template <class Element>
 void SmcArray<Element>::copyArrayIncreasedSize(int s){
@@ -274,7 +259,7 @@ void SmcArray<Element>::copyArrayIncreasedSize(int s){
     
     //TODO: refactor and rename this to change size
     
-    //Check to see if new size is within the minSize And MaxSize
+    //check to see if new size is within the minSize And MaxSize
     //check if the new size is greater than the existing size
     if ((s > this->size) && s < maxSize){
         
@@ -293,11 +278,13 @@ void SmcArray<Element>::copyArrayIncreasedSize(int s){
         this->size = s;
         
     }else{
-        cerr << "Oh no! My program is crashing\n";
+        cerr << "Oh no! My program is crashing\n"; //Error statement
         throw "array out of bounds exception";
     }
 }
+
 //TODO: Comments
+//Copy array into a new array when it is decreased by one item
 template <class Element>
 void SmcArray<Element>::copyArrayDecreasedSizeby1(int s, int index){
     //TODO:
@@ -305,9 +292,7 @@ void SmcArray<Element>::copyArrayDecreasedSizeby1(int s, int index){
     //Check to see if new size is within the minSize And MaxSize
     //check if the new size is greater than the existing size
     
-    if (this->checkIndexBounds(index)){
-        
-        //TODO: Comments
+    if (this->checkIndexBounds(index)){ //check to see if index is within bounds
         int * newArray = new int[s];
         
         //Copy array that is decreased by 1 at given index from the original array into the new array
@@ -325,19 +310,18 @@ void SmcArray<Element>::copyArrayDecreasedSizeby1(int s, int index){
         this->size = s;
         
     }else{
-        cerr << __PRETTY_FUNCTION__ << " Oh no! My program is crashing\n";////_PRETTY_FUNCTION helps with debugging by identifying the name of where error is located
+        cerr << __PRETTY_FUNCTION__ << " Oh no! My program is crashing\n"; //_PRETTY_FUNCTION helps with debugging by identifying the name of where error is located
         throw "array out of bounds exception";
     }
 }
 
-
 //Checks if the index is within the bounds of the array
 template <class Element>
 bool SmcArray<Element>::checkIndexBounds(int index){
-    if(index >= minSize && index < this->size){
-        return true;
+    if(index >= minSize && index < this->size){ //checks if the index is greater than or equal to the minimum size and less than size of the array
+        return true; //if yes then return true
     }else{
-        return false;
+        return false; //if no then return false
     }
 }
 
@@ -346,13 +330,14 @@ template <class Element>
 void SmcArray<Element>::setDefault(Element value){
     this->defaultValue = value;
 }
+
 //Returns the default value
 template <class Element>
 Element SmcArray<Element>::getDefault(){
     return this->defaultValue;
 }
 
-//TODO: Comments
+//Changes the size of the array
 template <class Element>
 void SmcArray<Element>::changeSize(int newSize){
     //Check to make sure there is a default value
@@ -365,8 +350,6 @@ void SmcArray<Element>::changeSize(int newSize){
     //First check to make sure the new size is within the bounds of the system
     if(newSize > minSize && newSize < maxSize){
         
-        
-        //TODO: Comment
         Element * newArray = new Element[newSize];
         
         //Copy array that is decreased by 1 at given index from the original array into the new array
@@ -392,18 +375,16 @@ void SmcArray<Element>::changeSize(int newSize){
     }
 }
 
-
-
 //TODO: testing we will do this later
 //  insertings, removing items
 // default settings... what about negatives?
 
-//Test Case One tests adding items to the array
+//Test Case One tests adding items to the array using integers
 void testCaseOne(){
-
+    
     cout << __PRETTY_FUNCTION__ << endl;
     
-    int myArraySize = 8;
+    int myArraySize = 8; //sets array size to 8
     //Create an INSTANCE OBJECT of our class
     SmcArray<int>* testArray = new SmcArray<int>(myArraySize);
     // Add values to our array
@@ -412,8 +393,14 @@ void testCaseOne(){
     }
     
     //Prints what is in my array
-    cout << __PRETTY_FUNCTION__ << " - Prints out the array before performing an operation." << endl;
-    testArray->printArray(true);
+    cout << "//////////////////////////////////////////////////////////////////////////////////////";
+    
+    cout << "//===============" <<endl;
+    cout << "//== Test Case 1.1: Insert into Array with data type INT" << endl;
+    //cout << __PRETTY_FUNCTION__ << "//== Test Case 1: Insert into Array with data type INT" << endl; // for debugging
+    cout << "//== Array before performing operation: ";
+    
+    testArray->printArray(true); //print original array
     
     //Items to be added to the array.
     testArray->pushItem(55);
@@ -422,9 +409,10 @@ void testCaseOne(){
     testArray->pushItem(21);
     testArray->pushItem(-21);
     testArray->setItem(88, 44);
-    cout << __PRETTY_FUNCTION__ << " - Prints out the array with added items." << endl;
-    
-    testArray->printArray(true);
+    //cout << __PRETTY_FUNCTION__ << endl << " == Test Case 1: Insert into Array with data type INT" << endl;
+    cout << "//== Test Case 1.1: Insert into Array with data type INT" << endl;
+    cout << "//== Results 1.1: ";
+    testArray->printArray(true); //print array with added integers
     
     //Assertion of correctness
     SmcArray<int>* resultArray = new SmcArray<int>(myArraySize+6);
@@ -446,16 +434,15 @@ void testCaseOne(){
     for(int i = 0;i < testArray->getSize(); i++){
         assert(testArray->getItem(i) == resultArray->getItem(i));
     }
-    
-    cout << __PRETTY_FUNCTION__ << " - Test Completed Successfully" << endl;
-    
+    cout << __PRETTY_FUNCTION__ << " - Test 1.1 Completed Successfully" << endl; //_PRETTY_FUNCTION helps with debugging by identifying the name of where error is located
+    cout << endl;
 }
 
-void testCaseOneFloat(){
+void testCaseOneFloat(){ //Test Case One tests adding items to the array using floats
     
-    cout << __PRETTY_FUNCTION__ << endl;
+    //cout << __PRETTY_FUNCTION__ << endl;
     
-    int myArraySize = 8;
+    int myArraySize = 8; //set array size to 8
     //Create an INSTANCE OBJECT of our class
     SmcArray<float>* testArray = new SmcArray<float>(myArraySize);
     // Add values to our array
@@ -464,8 +451,11 @@ void testCaseOneFloat(){
     }
     
     //Prints what is in my array
-    cout << __PRETTY_FUNCTION__ << " - Prints out the array before performing an operation." << endl;
-    testArray->printArray(true);
+    //cout << __PRETTY_FUNCTION__ << " - Prints out the array before performing an operation." << endl;
+    cout << "//== Test Case 1.2: Insert into Array with data type FLOAT" << endl;
+    //cout << __PRETTY_FUNCTION__ << "//== Test Case 1: Insert into Array with data type INT" << endl; // for debugging
+    cout << "//== Array before performing operation: ";
+    testArray->printArray(true); // prints original array with floats
     
     //Items to be added to the array.
     testArray->pushItem(.25);
@@ -474,9 +464,10 @@ void testCaseOneFloat(){
     testArray->pushItem(21);
     testArray->pushItem(-21.2);
     testArray->setItem(88, 44);
-    cout << __PRETTY_FUNCTION__ << " - Prints out the array with added items." << endl;
-    
-    testArray->printArray(true);
+    //cout << __PRETTY_FUNCTION__ << " - Prints out the array with added items." << endl;
+    cout << "//== Test Case 1.2: Insert into Array with data type FLOAT" << endl;
+    cout << "//== Results 1.2: ";
+    testArray->printArray(true); //print array with adding floats
     
     //Assertion of correctness
     SmcArray<float>* resultArray = new SmcArray<float>(myArraySize+6);
@@ -495,26 +486,25 @@ void testCaseOneFloat(){
     resultArray->setItem(-21.2, 12);
     resultArray->setItem(88, 13);
     
-    for(int i = 0; i < testArray->getSize(); i++){
+    for(int i = 0; i < testArray->getSize(); i++){ //assert to check and debug
         //cout << __PRETTY_FUNCTION__ << " - Test Array Item: " << testArray->getItem(i) << " - Result Array Item: " <<resultArray->getItem(i) << endl;
         assert(testArray->getItem(i) == resultArray->getItem(i));
         /*
-        if(){
-            cerr << __PRETTY_FUNCTION__ << " - Test Array Item: " << testArray->getItem(i) << " - Result Array Item: " <<resultArray->getItem(i) << endl;
-        }
+         if(){
+         cerr << __PRETTY_FUNCTION__ << " - Test Array Item: " << testArray->getItem(i) << " - Result Array Item: " <<resultArray->getItem(i) << endl;
+         }
          */
     }
-    
-    cout << __PRETTY_FUNCTION__ << " - Test Completed Successfully" << endl;
-    
+    cout << __PRETTY_FUNCTION__ << " - Test 1.2 Completed Successfully" << endl; //_PRETTY_FUNCTION helps with debugging by identifying the name of where error is located
 }
 
-
+//Test Case One tests adding items to the array using double
 void testCaseOneDouble(){
     
-    cout << __PRETTY_FUNCTION__ << endl;
+    //cout << __PRETTY_FUNCTION__ << endl;
+    cout << endl;
     
-    int myArraySize = 8;
+    int myArraySize = 8; //set array size to 8
     //Create an INSTANCE OBJECT of our class
     SmcArray<double>* testArray = new SmcArray<double>(myArraySize);
     // Add values to our array
@@ -523,19 +513,22 @@ void testCaseOneDouble(){
     }
     
     //Prints what is in my array
-    cout << __PRETTY_FUNCTION__ << " - Prints out the array before performing an operation." << endl;
-    testArray->printArray(true);
+    //cout << __PRETTY_FUNCTION__ << " - Prints out the array before performing an operation." << endl;
+    cout << "//== Test Case 1.3: Insert into Array with data type DOUBLE" << endl;
+    cout << "//== Array before performing operation: ";
+    testArray->printArray(true); //print original array
     
     //Items to be added to the array.
     testArray->pushItem(.25);
     testArray->pushItem(12);
-    testArray->pushItem(1.01);
+    testArray->pushItem(1.01123);
     testArray->pushItem(21);
     testArray->pushItem(-21.2);
     testArray->setItem(88, 44);
-    cout << __PRETTY_FUNCTION__ << " - Prints out the array with added items." << endl;
-    
-    testArray->printArray(true);
+    //cout << __PRETTY_FUNCTION__ << " - Prints out the array with added items." << endl;
+    cout << "//== Test Case 1.3: Insert into Array with data type DOUBLE" << endl;
+    cout << "//== Results 1.3: ";
+    testArray->printArray(true); //prints array with new DOUBLE
     
     //Assertion of correctness
     SmcArray<double>* resultArray = new SmcArray<double>(myArraySize+6);
@@ -549,12 +542,12 @@ void testCaseOneDouble(){
     resultArray->setItem(7, 7);
     resultArray->setItem(0.25, 8);
     resultArray->setItem(12, 9);
-    resultArray->setItem(1.01, 10);
+    resultArray->setItem(1.01123,10);
     resultArray->setItem(21, 11);
     resultArray->setItem(-21.2, 12);
     resultArray->setItem(88, 13);
     
-    for(int i = 0;i < testArray->getSize(); i++){
+    for(int i = 0;i < testArray->getSize(); i++){ //assert and debug
         //cout << __PRETTY_FUNCTION__ << " - Test Array Item: " << testArray->getItem(i) << " - Result Array Item: " <<resultArray->getItem(i) << endl;
         assert(testArray->getItem(i) == resultArray->getItem(i));
         /*
@@ -564,20 +557,20 @@ void testCaseOneDouble(){
          */
     }
     
-    cout << __PRETTY_FUNCTION__ << " - Test Completed Successfully" << endl;
+    cout << __PRETTY_FUNCTION__ << " - Test 1.3 Completed Successfully" << endl;
     
 }
 
-
-
+//Test Case One tests adding items to the array using string
 void testCaseOneString(){
     
-    cout << __PRETTY_FUNCTION__ << endl;
-    int myArraySize = 8;
+    //cout << __PRETTY_FUNCTION__ << endl;
+    cout << endl;
+    int myArraySize = 8; //set array size to 8
     
     //Setup test data
     vector <string> testData;
-    for (int i = 0; i < myArraySize+6; i++){
+    for (int i = 0; i < myArraySize+6; i++){ //generates random strings to store in array
         testData.push_back(generateRandomStringOfLength(i+1));
     }
     
@@ -589,16 +582,19 @@ void testCaseOneString(){
     }
     
     //Prints what is in my array
-    cout << __PRETTY_FUNCTION__ << " - Prints out the array before performing an operation." << endl;
-    testArray->printArray(true);
+    //cout << __PRETTY_FUNCTION__ << " - Prints out the array before performing an operation." << endl;
+    cout << "//== Test Case 1.4: Insert into Array with data type STRING" << endl;
+    cout << "//== Array before performing operation: ";
+    testArray->printArray(true); //prints original array
     
     //Items to be added to the array.
     for (int i = 8; i < myArraySize+6; i++){
         testArray->pushItem(testData.at(i));
     }
-    cout << __PRETTY_FUNCTION__ << " - Prints out the array with added items." << endl;
-    
-    testArray->printArray(true);
+    //cout << __PRETTY_FUNCTION__ << " - Prints out the array with added items." << endl;
+    cout << "//== Test Case 1.4: Insert into Array with data type STRING" << endl;
+    cout << "//== Results 1.4: ";
+    testArray->printArray(true); //prints array with added strings
     
     //Assertion of correctness
     SmcArray<string>* resultArray = new SmcArray<string>(myArraySize+6);
@@ -607,7 +603,7 @@ void testCaseOneString(){
         resultArray->setItem(temp, i);
     }
     
-    for(int i = 0;i < testArray->getSize(); i++){
+    for(int i = 0;i < testArray->getSize(); i++){ //assertion of correctness
         //cout << __PRETTY_FUNCTION__ << " - Test Array Item: " << testArray->getItem(i) << " - Result Array Item: " <<resultArray->getItem(i) << endl;
         assert(testArray->getItem(i) == resultArray->getItem(i));
         /*
@@ -616,15 +612,15 @@ void testCaseOneString(){
          }
          */
     }
-    
-    cout << __PRETTY_FUNCTION__ << " - Test Completed Successfully" << endl;
-    
+    cout << __PRETTY_FUNCTION__ << " - Test 1.4 Completed Successfully" << endl;
 }
 
+//Test Case One tests adding items to the array using char
 void testCaseOneChar(){
     
-    cout << __PRETTY_FUNCTION__ << endl;
-    int myArraySize = 8;
+    //cout << __PRETTY_FUNCTION__ << endl;
+    cout << endl;
+    int myArraySize = 8; //set array size to 8
     
     //Setup test data
     vector <char> testData;
@@ -640,16 +636,19 @@ void testCaseOneChar(){
     }
     
     //Prints what is in my array
-    cout << __PRETTY_FUNCTION__ << " - Prints out the array before performing an operation." << endl;
-    testArray->printArray(true);
+    //cout << __PRETTY_FUNCTION__ << " - Prints out the array before performing an operation." << endl;
+    cout << "//== Test Case 1.5: Insert into Array with data type CHAR" << endl;
+    cout << "//== Array before performing operation: ";
+    testArray->printArray(true); //prints original array
     
     //Items to be added to the array.
     for (int i = 8; i < myArraySize+6; i++){
         testArray->pushItem(testData.at(i));
     }
-    cout << __PRETTY_FUNCTION__ << " - Prints out the array with added items." << endl;
-    
-    testArray->printArray(true);
+    //cout << __PRETTY_FUNCTION__ << " - Prints out the array with added items." << endl;
+    cout << "//== Test Case 1.5: Insert into Array with data type CHAR" << endl;
+    cout << "//== Results 1.5: ";
+    testArray->printArray(true); //prints array with added char items
     
     //Assertion of correctness
     SmcArray<char>* resultArray = new SmcArray<char>(myArraySize+6);
@@ -657,7 +656,6 @@ void testCaseOneChar(){
         char temp = testData.at(i);
         resultArray->setItem(temp, i);
     }
-
     
     for(int i = 0;i < testArray->getSize(); i++){
         //cout << __PRETTY_FUNCTION__ << " - Test Array Item: " << testArray->getItem(i) << " - Result Array Item: " <<resultArray->getItem(i) << endl;
@@ -668,9 +666,8 @@ void testCaseOneChar(){
          }
          */
     }
-    
-    cout << __PRETTY_FUNCTION__ << " - Test Completed Successfully" << endl;
-    
+    cout << __PRETTY_FUNCTION__ << " - Test 1.5 Completed Successfully" << endl;
+    cout << "//===============" <<endl;
 }
 
 
@@ -694,7 +691,7 @@ void testCaseTwo(){
     myArray->pushItem(43);
     myArray->pushItem(21);
     myArray->pushItem(-21);
-
+    
     //Prints what is in new array with added items.
     cout << "Prints out the array with push items" << endl;
     myArray->printArray(true);
@@ -776,29 +773,10 @@ void testCaseFour(){
     
 }
 
-//Test Case Five tests replacing a value at a given index
-void testCaseFive(){
-    int myArraySize = 8;
-    //Create an INSTANCE OBJECT of our class
-    SmcArray<int>* myArray = new SmcArray<int>(myArraySize);
-    // Add values to our array
-    for (int i = 0; i < myArray->getSize(); i++){
-        myArray->setItem(i,i);
-    }
-    
-    //Prints what is in my array
-    cout << "Prints out the array before performing an operation." << endl;
-    myArray->printArray(true);
-    
-    //Replace Item at given index
-    myArray->replaceItemAt(5, 253);
-    cout << "An item's value in the array is replaced at given index." << endl;
-    //Prints the array with value replaced at given index
-    myArray->printArray(true);
-}
-
 //TestData
 //ExpectedTestResults
+
+ 
 
 int main(int argc, const char * argv[]){
     //Calling Test cases
@@ -807,29 +785,14 @@ int main(int argc, const char * argv[]){
     testCaseOneDouble();
     testCaseOneString();
     testCaseOneChar();
-    testCaseTwo(); //Test Case Two tests changing size to the array
-    testCaseThree(); //Test Case Three tests inserting an item at a given index
-    testCaseFour(); //Test Case Four tests removing an item at a given index
-    testCaseFive(); //Test Case Five tests replacing a value at a given index
+    //testCaseTwo(); //Test Case Two tests changing size to the array
+    //testCaseThree(); //Test Case Three tests inserting an item at a given index
+    //testCaseFour(); //Test Case Four tests removing an item at a given index
+    cout << "//////////////////////////////////////////////////////////////////////////////////////" << endl;
     return 0;
 }
 
-////////////////
-
-
-//===============
-//== Test Case 1: Insert into Array with data type INT
-//== Result 1
-//== Test Case 1: Insert into Array with data type DOUBLE
-//== Results 2
-//== Test Case 1: Complete
-//===============
-//== Test Case 2: Insert into Array with data type INT
-//== Result 1
-//== Test Case 2: Complete
-
 /*
- 
  Assignment 1 - Flexible Resizable Array
  
  Create a class that implements a safe resizable array, which can
@@ -931,4 +894,4 @@ int main(int argc, const char * argv[]){
  28: x = 85, sin(pi/x) = 0.0369515
  29: x = 88, sin(pi/x) = 0.0356923
  Error - index out of bounds.
-*/
+ */
