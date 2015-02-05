@@ -21,6 +21,7 @@
 #include <stdexcept>
 #include <assert.h>
 #include <vector>
+#include <math.h>
 
 using namespace std;
 
@@ -174,7 +175,7 @@ Element SmcArray<Element>::getItem(int index){
         
     }else{
         //Even though this will return the default value the user is prompted with a message indicating that a default value has been returned
-        cerr << __PRETTY_FUNCTION__ << ": Returning Default Value\n ";//_PRETTY_FUNCTION helps with debugging by identifying the name of where error is located
+        cerr << __PRETTY_FUNCTION__ << "- WARNING: Returning Default Value\n ";//_PRETTY_FUNCTION helps with debugging by identifying the name of where error is located
         
         //TODO: setting with type
         return this->defaultValue; //returns the default value
@@ -776,18 +777,184 @@ void testCaseFour(){
 //TestData
 //ExpectedTestResults
 
- 
+//This test case validates the functionality of the printArray() function
+template <typename Element>
+void testPrintArray(typename SmcArray<Element>::SmcArray* smcArray){
+    //TODO: Add starting commments
+    smcArray->printArray(true);
+    //TODO: ending starting commments
+}
+
+
+//This test case validates the functionality of the setItem() function
+template <typename Element>
+void testSetItem(typename SmcArray<Element>::SmcArray* smcArray, Element testData ){
+    //TODO: Add starting commments
+    smcArray->printArray(true);
+    
+    //Test setting an item into the array
+    smcArray->setItem(testData, 5);
+    smcArray->printArray(true);
+    
+    //Test setting an item outside the bounds of the array
+    
+    smcArray->setItem(testData, smcArray->getSize() + 5);
+    smcArray->printArray(true);
+    
+    //TODO: ending starting commments
+}
+
+template <typename Element>
+void testChangeSize(typename SmcArray<Element>::SmcArray* smcArray, Element testData ){
+    //TODO: Add starting commments
+    smcArray->printArray(true);
+
+    //todo: set default item
+    //Todo: make it shorter
+    //Todo: make it longer
+
+    smcArray->printArray(true);
+    
+    //TODO: ending starting commments
+}
+
+template <typename Element>
+void testInsertItem(typename SmcArray<Element>::SmcArray* smcArray, Element testData ){
+    //TODO: Add starting commments
+    smcArray->printArray(true);
+
+    //This where your fun happens
+
+    smcArray->printArray(true);
+    
+    //TODO: ending starting commments
+}
+
+template <typename Element>
+void testRemoveItem(typename SmcArray<Element>::SmcArray* smcArray, Element testData ){
+    //TODO: Add starting commments
+    smcArray->printArray(true);
+    
+    
+    
+    //This is where your fun happens
+    
+    
+    
+    smcArray->printArray(true);
+    
+    //TODO: ending starting commments
+}
+
+
+void testProvidedTestCase(){
+    //TODO: Add starting commments
+    
+    
+    SmcArray<int>* Xvals = new SmcArray<int>(10);
+    SmcArray<double>* Yvals = new SmcArray<double>();
+    
+    cout << "size is " << Xvals->getSize() << "\n";
+
+    for (int i = 0; i < 30; i += 1){
+        int x = i*3+1;
+        double y = sin(M_PI/x); //M_PI is a constant in the math.h library
+        Xvals->setItem(x, i);
+        Yvals->setItem(y, i);
+    }
+    
+    cout << "size is " << Xvals->getSize() << "\n";
+    
+    for (int i = 0; i <= Xvals->getSize(); i += 1)
+        cout << i << ": x = " << Xvals->getItem(i) << ", sin(pi/x) = " << Yvals->getItem(i) << "\n";
+
+    //TODO: ending starting commments
+}
 
 int main(int argc, const char * argv[]){
+    
+    int testArraySize = 8;
+    
+    SmcArray<int>* intTestArray = new SmcArray<int>(testArraySize);
+    // Add values to our array
+    for (int i = 0; i < intTestArray->getSize(); i++){
+        intTestArray->setItem(i,i);
+    }
+    
+    int intTestData = 99;
+    
+    SmcArray<double>* doubleTestArray = new SmcArray<double>(testArraySize);
+    // Add values to our array
+    for (int i = 0; i < doubleTestArray->getSize(); i++){
+        doubleTestArray->setItem(i + 0.1,i);
+    }
+    
+    double doubleTestData = 77.02;
+    
+    SmcArray<float>*  floatTestArray = new SmcArray<float>(testArraySize);
+    // Add values to our array
+    for (int i = 0; i < floatTestArray->getSize(); i++){
+        floatTestArray->setItem(i + 0.2,i);
+    }
+    
+    float floatTestData = 555.555;
+    
+    SmcArray<string>* stringTestArray = new SmcArray<string>(testArraySize);
+    // Add values to our array
+    for (int i = 0; i < stringTestArray->getSize(); i++){
+        stringTestArray->setItem(generateRandomStringOfLength(i+1), i);
+    }
+    
+    string stringTestData = "MyTestStringIsAwesome";
+    
+    SmcArray<char>* charTestArray = new SmcArray<char>(testArraySize);
+    // Add values to our array
+    for (int i = 0; i < charTestArray->getSize(); i++){
+        charTestArray->setItem(genRandomChar(), i);
+    }
+    
+    char charTestData = 't';
+    
+    testPrintArray<int>(intTestArray);
+    testPrintArray<double>(doubleTestArray);
+    testPrintArray<float>(floatTestArray);
+    testPrintArray<string>(stringTestArray);
+    testPrintArray<char>(charTestArray);
+    
+    testSetItem<int>(intTestArray, intTestData);
+    testSetItem<double>(doubleTestArray, doubleTestData);
+    testSetItem<float>(floatTestArray, floatTestData);
+    testSetItem<string>(stringTestArray, stringTestData);
+    testSetItem<char>(charTestArray, charTestData);
+    
+    //Todo: Add test cases -- Copy and move the above
+    // 5 testInsertItems
+    // 5 testRemoveItems
+
+    testProvidedTestCase();
+    
+
+    
+    
+    /*
     //Calling Test cases
     testCaseOne(); //Test Case One tests adding items to the array
     testCaseOneFloat();
     testCaseOneDouble();
     testCaseOneString();
     testCaseOneChar();
+     */
     //testCaseTwo(); //Test Case Two tests changing size to the array
     //testCaseThree(); //Test Case Three tests inserting an item at a given index
     //testCaseFour(); //Test Case Four tests removing an item at a given index
+    
+    //Release Resources
+    //  TODO: Finish
+    intTestArray->~SmcArray();
+    doubleTestArray->~SmcArray();
+    //testPrintArray<float>(floatTestArray);
+    //testPrintArray<string>(stringTestArray);
+    //testPrintArray<char>(charTestArray);
     cout << "//////////////////////////////////////////////////////////////////////////////////////" << endl;
     return 0;
 }
@@ -857,7 +1024,8 @@ int main(int argc, const char * argv[]){
  cout << "size is " << Xvals.get_size() << "\n";
  
  for (int i = 0; i <= Xvals.get_size(); i += 1)
- cout << i << ": x = " << Xvals.get(i) << ", sin(pi/x) = " << Yvals.get(i) << "\n"; }
+ cout << i << ": x = " << Xvals.get(i) << ", sin(pi/x) = " << Yvals.get(i) << "\n";
+ }
  
  It should produce output a lot like this (not necessarily identical)
  
@@ -895,3 +1063,11 @@ int main(int argc, const char * argv[]){
  29: x = 88, sin(pi/x) = 0.0356923
  Error - index out of bounds.
  */
+
+
+//References
+//http://stackoverflow.com/questions/1727881/how-to-use-the-pi-constant-in-c
+//http://stackoverflow.com/questions/11560098/passing-template-class-as-parameter-to-class-method-and-using-template-class-as
+//http://stackoverflow.com/questions/19661347/passing-template-class-as-parameter
+//http://www.codeproject.com/Articles/257589/An-Idiots-Guide-to-Cplusplus-Templates-Part
+//http://stackoverflow.com/questions/9843671/c-template-function-taking-template-class-as-parameter
