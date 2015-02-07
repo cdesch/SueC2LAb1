@@ -6,6 +6,10 @@
 //  Copyright (c) 2015 KickinEspresso. All rights reserved.
 //
 
+//Requires: gcc version 4.8.2 (Ubuntu 4.8.2-19ubuntu1)
+//Compile Command: g++ -Wall -w -Werror -g main.cpp -o SueC2Lab1
+//Run Command: ./SueC2Lab1
+
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -762,7 +766,7 @@ void testChangeSize(typename SmcArray<Element>::SmcArray* smcArray, Element defa
     
     //Prints array with changed size.
     cout << "Prints out the array with changed size when new array is a larger array. Default value is set to " << smcArray->getDefault() << ": " << endl;
-    smcArray->changeSize(15);
+    smcArray->changeSize(11);
     smcArray->printArray(true);
     cout << endl << "===================" << endl;
 }
